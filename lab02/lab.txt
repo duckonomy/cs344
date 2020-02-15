@@ -1,0 +1,20 @@
+#+TITLE: CS344 Lab 02: Local Search
+* Exercise 2.1
+ a. Which of the local search algorithms solves the problem? How well does each algorithm do?
+ b. Which algorithm works more quickly?
+ c. Does the start value for x make any difference? Why or why note?
+ d. What effect does changing the \Delta step make on each algorithm? Why?
+ e. What is the purpose of the ~exp_schedule()~ method in the simulated annealing function call?
+* Exercise 2.2
+ a. How do each of the algorithms do on this problem space? Why?
+ b. Does the starting value make any difference here?
+ c. Does modifying the step size (i.e., \Delta) affect the operation of the two algorithms? Why or why not?
+ d. What are the maximum and minimum possible values here, and how do the two algorithms score with respect to them?
+* Exercise 2.3
+ a. How does each algorithm do with these restarts? Why?
+ b. What are the average values of the runs for each of the algorithms? 
+ c. If one of the algorithms does better, explain why; if not, explain why not. 
+* Exercise 2.4
+ a. For which algorithm does beam search make the most sense?
+ b. How many solutions could you maintain with reasonable space and time constraints? 
+ c. How would you modify the code to implement beam search? How is it different from random restarts, if at all? 
