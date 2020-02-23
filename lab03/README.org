@@ -1,6 +1,7 @@
 #+TITLE:Constraint Satisfaction
 * Exercise 1
  a. Which algorithms work (in a timely manner) and which don’t? Explain your results in terms of the capabilities (and implementations) of the algorithms and nature of the problems.
+
  b. What effect does configuring the settings for backtracking have on the results? Try the following:
     1. Set the variable/value ordering (i.e., the ~select_unassigned_variable~ parameter) to first-unassigned-variable (the default) or minimum-remaining-values (i.e., mrv). 
     2. Set the inference (i.e., the inference parameter) to forward-checking (i.e., ~forward_checking~). 
