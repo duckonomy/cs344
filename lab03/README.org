@@ -5,7 +5,7 @@
  b. What effect does configuring the settings for backtracking have on the results? Try the following:
     1. Set the variable/value ordering (i.e., the ~select_unassigned_variable~ parameter) to first-unassigned-variable (the default) or minimum-remaining-values (i.e., ~mrv~). 
     2. Set the inference (i.e., the inference parameter) to forward-checking (i.e., ~forward_checking~). 
- Which, if any, of these settings should work best for sudoku? What combination of settings actually works the best?
+    Which, if any, of these settings should work best for sudoku? What combination of settings actually works the best?
  
 
 
