@@ -1,1 +1,38 @@
-Exercise 3.1
+#+TITLE:Constraint Satisfaction
+#+AUTHOR:Ian Park, CS344, Calvin University
+#+DATE:<2020-02-23 Sun>
+* Exercise 1
+a. Which algorithms work (in a timely manner) and which don’t? Explain your results in terms of the capabilities (and implementations) of the algorithms and nature of the problems.
+   - Depth-first search does not find any of the solutions in a timely manner. It would have to search through all the paths, even those that are wrong.
+   - AC3 does find solutions to the easy puzzle relatively quickly. However, fails to solve the harder ones. Because the AC3 considers pairs of states, when the problem is close to a complete, it works. On the other hand, when it is more incomplete, thus hard, since there is no implementation that considers potential solutions by guessing, the algorithm does not have a workable problem.
+   - Backtracking gives solutions to the easy problem, but it takes a longer time than AC3, which was instant. However, it seems to be very slow for the harder problems. It has to backtrack, search, and check different routes. If the heuristic isn't very good at pruning (in this case not specified), it will have to search and check more. When the problems gets harder, the time to do this increases significantly.
+   - Min-conflicts fails to solve the easy problem after taking a while to terminate. It may find a solution in more trials. However, after running five times, that does not seem to be likely. It terminates because of a given limit of steps (100000). Furthermore, it most likely terminates at an incorrect local maximum because it got stuck.
+
+b. What effect does configuring the settings for backtracking have on the results? Try the following:
+   1. Set the variable/value ordering (i.e., the ~select_unassigned_variable~ parameter) to first-unassigned-variable (the default) or minimum-remaining-values (i.e., ~mrv~).
+   2. Set the inference (i.e., the ~inference~ parameter) to forward-checking (i.e., ~forward_checking~).
+
+      - Setting the ~inference~ parameter with ~forward_checking~ significantly improved the run-time for both harder and hardest problems. On the other hand, setting just the ~select_unassigned_variable~ with ~mrv~ did not improve as much. Nevertheless, using both parameters improved the time even more.
+   
+   3. Which, if any, of these settings should work best for sudoku? What combination of settings actually works the best?
+      - Using both parameters(~mrv~ & ~forward_checking~) works best for sudoku. ~mrv~ orders the smallest value in the domain and makes the variable consistent. Thus, it enhances failure detection. ~forward_checking~ filters values and allows the algorithm to jump to a different domain quickly when invalid.
+
+* Exercise 2
+a. How large can n get for each of the algorithms? Why?
+   - Depth-first search fails to find a solution in a timely manner (There also seems to be a bug? Shown in the comments.). If it did however, it would have a similar problem with our previous one due to extensive depth searching.
+   - AC3 also fails due to the same reason explained in the sudoku problem. It cannot reach a solution.
+   - Pure backtracking without enhancement parameters solves the problem relatively quickly until n=25. At n=26 it jumps to 6.8 seconds from 0.7 seconds. The speed seems to grow exponentially as the size increases. With the ~mrv~ and ~forward_search~, I was able to get almost instant speeds until n=286. Afterwards, it took too long to measure.
+   - Min-conflicts took about 7.7 seconds at n=3000. Furthermore, the increase in time was more gradual than backtracking. Overall, it gave the best results.
+
+b. What backtracking settings work the best? Why?
+   - From trying all the different configurations, it seems like mrv made the most significant difference among all of the parameters. By setting the mrv, the algorithm will choose the queen with the most conflicts. So, it prunes results to quicken the time to move on to other options. The mrv parameter in combination with ~forward_checking~ gave the best results for larger sizes (up to 286).
+
+c. How many steps does Min-Conflicts require to do its work? Why?
+   - At first, I thought it was dependent on the size of ~n~. However, even then, it is extremely inconsistent due to randomness. I've tried tinkering with the code from ~csp.py~ and returning the final ~i~ th step on ~n=1000~ and the results varied from 20 to 113. I tried lowering the ~n~ to 30. Surprisingly that fluctuated even more (maybe because I ran it more times). It ranged from 0 to even 229. In conclusion, I think it is step size more dependent on each random values starting position from the maximum than the size of the ~n~. Overall, from the values I've tested it never really went over 300 regardless of the size of ~n~.
+
+* Exercise 3
+a. Compare and contrast the specifications for CSP (i.e., csp.CSP) and traditional problems (i.e., search.Problem). Be sure to consider the nature of states, domains, actions, results and goal tests.
+   - The ~Problem~ class in ~search~ is inherited by the ~CSP~ class. So, ~CSP~ has states, actions, and goals like ~Problem~ does. The ~CSP~ introduces a way to limit the problem to valid states through constraints. This is done through having state variables and domains that are checked by ~goal_test~ against constraints. The constraints search adds this optimization process of pruning out unnecessary actions and steps.
+
+b. Compare and contrast the nature of the heuristics deployed in traditional and constraint-based problem solving.
+   - They are both attempting to optimize the process of solving problems. However, unlike traditional search heuristics that are usually added in the calculation for choosing an optimal value (e.g. a cost in path), constraints search heuristics prune choices based on each state's values meeting a set of constraints.
