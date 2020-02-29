@@ -31,4 +31,4 @@
  - P(cancer | positive) = P(positive | cancer) * P(cancer) / P(positive)
                 	= 0.8 * 0.01 / 0.10304
 			= 0.0776
- - So about 7.8% chance that she has cancer.
+ - So there is about a 7.8% chance that she has cancer.
