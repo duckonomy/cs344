@@ -23,6 +23,8 @@ P[F, F, T, F] = 0.072; P[F, F, F, F] = 0.288
 PC = enumerate_joint_ask('Toothache', {'Rain': T}, P)
 print(PC.show_approx())
 
+# Result: False: 0.8, True: 0.2
+
 """
 Q. How many entries does your full joint probability distribution contain now?
 A. 16 entries.
