@@ -1,0 +1,34 @@
+* Exercise 4.3
+
+** Drug Testing
+ 1. P(user) = 0.089
+ 2. P(test | user) = 0.99
+ 3. P(¬test | user) = 0.01
+ 4. P(test | ¬user) = 0.02
+ 5. P(user | test)
+   - P(test) = P(test | user) * P(user) + P(test | ¬user) * P(¬user)
+             = 0.089 * 0.99 + 0.911 * 0.02
+	     = 0.10633
+	     
+   - P(user and test) = P(user) * P(test | user)
+                      = 0.089 * 0.99
+                      = 0.08811
+		      
+   - P(user | test) = P(user and test) / P(test)
+		    = 0.08811 / 0.10633
+		    = 0.82864
+		    
+   - <P(user), P(¬user)> = <0.82864, 0.17136>
+
+** Breast Cancer
+ - P(cancer) = 0.01
+ - P(¬cancer) = 0.99
+ - P(positive | cancer) = 0.8
+ - P(positive | ¬cancer) = 0.096
+ - P(positive) = P(positive | cancer) * P(cancer) + P(positive | ¬cancer) * P(¬cancer)
+               = 0.8 * 0.01 + 0.096 * 0.99
+	       = 0.10304
+ - P(cancer | positive) = P(positive | cancer) * P(cancer) / P(positive)
+                	= 0.8 * 0.01 / 0.10304
+			= 0.0776
+ - So about 7.8% chance that she has cancer.
