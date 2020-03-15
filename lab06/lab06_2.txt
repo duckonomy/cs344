@@ -1,0 +1,43 @@
+CS344 Exercise 6.2
+Ian Park
+
+Framing
+1a. We want our machine learned model to identify emails in Gmail as important or unimportant.
+
+2a. Our ideal outcome is to mark important Gmail emails with tags that indicate urgency, attention, and action required.
+
+3a. Our success metrics are the Gmail user rate of reading and responding to important emails and the time taken to make those actions.
+
+3b. Our key results (KR) for the success metrics are that the system successfully marks the majority (80-90%) of the emails that require user action. Furthermore, users should take action to marked emails before unimportant emails.
+
+3c. Our ML model is deemed a failure if emails that our system marked as important are read and action is taken at the same rate as unimportant emails that aren't marked.
+
+4a. The output from our ML model will identify the importance of an email.
+
+4b. The output is defined as the probability of whether the receiver took action to the email.
+
+5a. Our output from the ML model will be made when the user receives the email.
+
+5b. The output will be used for tagging and sorting the email for the user's inbox.
+
+6. If we didn't use ML, we would look for emails that contain emails that address the user by name, a reply to an email that the user sent, an email within the user's Google contacts, an email that is sent twice.
+
+Formulating
+7a. We would use Binary Classification in order to mark an email as Important or Not Important.
+
+7b. It is already a binary classification problem.
+
+8a. Inputs:
+            1. List of recipients of the email
+	    2. Address of sender.
+	    3. The first line of the email content
+	    4. The next line after white space to check if it is a response
+	    5. Sender's email address
+	    6. Subject of the email
+    Outputs:
+            1. Important
+	    2. Not Important
+
+9a. The data inputs would come from each of the incoming email messages.
+
+10a. I would choose the sender's email address, subject of the email, and the list of recipients of the email. These would give me a lot of initial information to identify the email.

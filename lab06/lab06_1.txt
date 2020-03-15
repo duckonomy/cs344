@@ -1,0 +1,21 @@
+CS344 Exercise 6.1
+Ian Park
+
+Q. Compute the information gain provided by the "Hungry?" question from the restaurant domain
+A. Computation:
+  Gain(Hungry) = Entropy(WillWait) - Remainder(Hungry),
+
+  Entropy(WillWait) = -(1/2 * lg(1/2) + 1/2 + lg(1/2))
+                    = 1
+		    
+  Remainder(Hungry) = 7/12 * Entropy(Hungry)
+                      + 5/12 * Entropy(NotHungry)
+                    = 7/12 * -(5/7 * lg(5/7) + 2/7 * lg(2/7))
+                      + 5/12 * -(1/5 * lg(1/5) + 4/5 * lg(4/5))
+                    = 0.8043
+		    
+  Gain(Hungry) = 1 - 0.8043 = 0.1957
+    
+ Q. Would this question be better than either of the questions discussed in class (i.e., “Patrons?”, “Type?”?
+ A. Information gain from Type? is 0.0, and Information gain from Patrons? is 0.54 (Both from class).
+    Thus, Hungry? would be give us more information than Type? but less than Patrons?.
