@@ -1,0 +1,67 @@
+Ian Park
+CS344 Lab07
+2020/03/29
+
+Exercise 7.3
+  a. Submit solutions to tasks 1–3.
+    1.
+      california_housing_dataframe["rooms_per_person"] = (
+          california_housing_dataframe["total_rooms"] / california_housing_dataframe["population"])
+      
+      calibration_data = train_model(
+          learning_rate=0.05,
+          steps=500,
+          batch_size=5,
+          input_feature="rooms_per_person")
+
+      RMSE (on training data):
+        period 00 : 213.53
+        period 01 : 190.37
+        period 02 : 169.88
+        period 03 : 152.34
+        period 04 : 140.87
+        period 05 : 133.71
+        period 06 : 131.16
+        period 07 : 130.87
+        period 08 : 131.85
+        period 09 : 131.27
+		
+      Final RMSE: 131.27
+    
+    2.
+      plt.figure(figsize=(15, 6))
+      plt.subplot(1, 2, 1)
+      plt.scatter(calibration_data["predictions"], calibration_data["targets"])
+	  
+    3.
+      california_housing_dataframe["rooms_per_person"] = california_housing_dataframe["rooms_per_person"]).apply(lambda x: min(x, 5)
+      
+      california_housing_dataframe["rooms_per_person"].hist()
+      
+      calibration_data = train_model(
+          learning_rate=0.05,
+          steps=500,
+          batch_size=5,
+          input_feature="rooms_per_person")
+      
+      plt.scatter(calibration_data["predictions"], calibration_data["targets"])
+
+      RMSE (on training data):
+        period 00 : 212.81
+        period 01 : 189.05
+        period 02 : 166.95
+        period 03 : 146.87
+        period 04 : 132.05
+        period 05 : 120.19
+        period 06 : 114.51
+        period 07 : 110.81
+        period 08 : 109.96
+        period 09 : 108.49
+      
+      Final RMSE: 108.56
+
+  b. What is the purpose of introducing synthetic features?
+    - The purpose of synthetic features is to create features out of existing features to gain information that we didn't have. In the example, we were able to get a population density out of total rooms and population.
+	
+  c. What are outliers and what is typically done with them?
+    - Outliers are the points that are far outside from the main data points of our data. They are usually trimmed off so that our data is represented accurately.

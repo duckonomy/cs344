@@ -1,0 +1,12 @@
+Ian Park
+CS344 Lab07
+2020/03/29
+
+Exercise 7.1
+  a. Submit your solutions to Exercise 1-2
+    1. cities['Saint and fifty square miles'] = (cities['City name'].apply(lambda name: name.startswith('San'))) & (cities['Area square miles'] > 50)
+    2. cities.reindex([0, 5, 7, 4])
+  b. Why would one use Pandas rather than the standard data manipulation features provided by NumPy?
+    - Pandas provides more data manipulation functionalities on top NumPy (Series are built on NumPy arrays) that are not available in NumPy by introducing more complex data structures, DataFrame and Series. These are helpful when your data is multidimensional. It introduces operations like vector operations, reindexing, and adding columns to provide useful numerical data computation functionality.
+  c. Under what circumstances would it be useful to reorder/shuffle a Pandas DataFrame?
+    - This would be useful when you want a random sample of selections from a dataset for statistical purposes.

@@ -16,7 +16,7 @@ cancer = BayesNet([
 
 # P(Cancer | positive results on both tests)
 print(enumeration_ask('Cancer', dict(Test1=T, Test2=T), cancer).show_approx())
-# P(Cancer | Test1 ∧ Test2) = alpha * <P(Cancer) * P(Test1 | Cancer) * P(Test2 | Cancer), P(Cancer) * P(¬Cancer) * P(Test1 | ¬Cancer) * P(Test2 | ¬Cancer)>
+# P(Cancer | Test1 ∧ Test2) = alpha * <P(Cancer) * P(Test1 | Cancer) * P(Test2 | Cancer), P(¬Cancer) * P(Test1 | ¬Cancer) * P(Test2 | ¬Cancer)>
 #                           = alpha * <0.9 * 0.9 * 0.01, 0.2 * 0.2 * 0.99>
 #                           = alpha * <0.0081, 0.0396>
 #                           = 1 / 0.0477 * <0.0081, 0.0396>
