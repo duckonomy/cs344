@@ -1,0 +1,18 @@
+Ian Park
+CS344 Lab07
+2020/04/05
+
+Exercise 8.4
+  a. What good did the K-fold validation do in this exercise?
+    - K-fold validation allows us to validate our model's performance in conditions where there is a limited data sample by dividing the data into K groups and creates a training dataset of the model with K-1 groups and creates the validation dataset with the rest. Then, the average of K scores of each group is the validation score.
+	
+  b. Chollet claims that it would be problematic to use data values with “wildly different ranges”. Why is this?
+    - This is because the model will struggle to learn due the wide range of features altering the parameters.
+	
+  c. Chollet also claims that smaller datasets “prefer” smaller networks. Do you agree? Explain your answer.
+    - Yes, I do agree. A small network would prevent overfitting as Chollet explains.
+	
+  d. Try networks with one more and one less hidden layer, and wider or narrower layers. Do any of your alternatives do better than the suggested architecture? Why or why not?
+    - I tried three configurations (including the default) and observed the test MAE scores [2 layers, 64 width], [1 layer, 64 width], [2 layers, 32 width]
+	- The first configuration gave 2.5239335729396240 and second gave 2.7916082181047795 and third gave 2.9229876169602742
+	- One less layer probably wasn't able to learn as fast as it needed to. And half the width probably had a similar problem.

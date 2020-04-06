@@ -1,0 +1,55 @@
+Ian Park
+CS344 Lab07
+2020/04/05
+
+Exercise 8.2
+  a. What does the Pearson correlation coefficient measure? Identify one example value from the correlation table you compute and explain why it makes sense. 
+    - The Pearson correlation coefficient measures the correlation for a pair of variables (between -1.0 and 1.0). In the correlation table, the correlation between the population and total_bedrooms has a correlation of 0.9. The high correlation explains how places where there is a higher population will have more total bedrooms.
+  
+  b. Submit your solutions to tasks 1–2. Include the features you selected for task 1 and the synthetic features you developed for task 2; include the final RMS errors but not the training output. Did you beat the Google-provided baselines? 
+    1.
+       minimal_features = [
+         "households",
+         "latitude",
+        ]
+       
+       minimal_training_examples = training_examples[minimal_features]
+       minimal_validation_examples = validation_examples[minimal_features]
+       
+       train_model(
+           learning_rate=0.00009,
+           steps=100,
+           batch_size=9,
+           training_examples=minimal_training_examples,
+           training_targets=training_targets,
+           validation_examples=minimal_validation_examples,
+           validation_targets=validation_targets)
+
+       Final RMSE = 217.84
+
+	
+    2.
+      def transform_features(features):
+        LATITUDE_RANGES = zip(range(32, 44), range(33, 45))
+        selected_examples = pd.DataFrame()
+        selected_examples["households"] = features["households"]
+        for r in LATITUDE_RANGES:
+          selected_examples["latitude_%d_to_%d" % r] = features["latitude"].apply(
+            lambda l: 1.0 if l >= r[0] and l < r[1] else 0.0)
+        return selected_examples
+
+	  transformed_training_examples = transform_features(training_examples)
+      transformed_validation_examples = transform_features(validation_examples)
+            
+      train_model(
+          learning_rate=0.00009,
+          steps=100,
+          batch_size=9,
+          training_examples=transformed_training_examples,
+          training_targets=training_targets,
+          validation_examples=trans_validation_examples,
+          validation_targets=validation_targets)
+
+      Final RMSE = 217.88
+
+      They did not beat Google baselines.

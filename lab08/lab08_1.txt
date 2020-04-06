@@ -1,0 +1,68 @@
+Ian Park
+CS344 Lab07
+2020/04/05
+
+Exercise 8.1
+  a. Submit solutions to tasks 1–5.
+    1. The dataset doesn't really seem to have any major problems. However, there seems to be some outliers (large max values) for some of the values that could be cut off (shown in median_income or rooms_per_person).
+    2. When we look at the tables of either dataset, we can see that there are some differences in some of the columns between two data sets.
+    3. The line, california_housing_dataframe = california_housing_dataframe.reindex(np.random.permutation(california_housing_dataframe.index)) is commented. So, there is no randomization process before creating the splits. This means that it is sorted in some order and is causing the mismatch in the data above.
+    4.	
+       training_input_fn = lambda: my_input_fn(
+         training_examples, 
+         training_targets['median_house_value'],
+         batch_size=batch_size)
+       
+       predict_training_input_fn = lambda: my_input_fn(
+         training_examples,
+         training_targets['median_house_value'],
+         num_epochs=1,
+         shuffle=False)
+       
+       predict_validation_input_fn = lambda: my_input_fn(
+         validation_examples, 
+         validation_targets['median_house_value'],
+         num_epochs=1,
+         shuffle=False)
+       
+       training_predictions = linear_regressor.predict(input_fn=predict_training_input_fn)
+       training_predictions = np.array([item['predictions'][0] for item in training_predictions])
+       
+       validation_predictions = linear_regressor.predict(input_fn=predict_validation_input_fn)
+       validation_predictions = np.array([item['predictions'][0] for item in validation_predictions])
+       
+       linear_regressor = train_model(
+         learning_rate=0.00003,
+         steps=500,
+         batch_size=5,
+         training_examples=training_examples,
+         training_targets=training_targets,
+         validation_examples=validation_examples,
+         validation_targets=validation_targets)
+
+    5.
+       california_housing_test_data = pd.read_csv("https://download.mlcc.google.com/mledu-datasets/california_housing_test.csv", sep=",")
+       
+       test_features = preprocess_features(california_housing_test_data)
+       test_targets = preprocess_targets(california_housing_test_data)
+       
+       predict_test_input_fn = lambda: my_input_fn(
+             test_features, 
+             test_targets["median_house_value"], 
+             num_epochs=1, 
+             shuffle=False)
+       
+       test_predictions = linear_regressor.predict(input_fn=predict_test_input_fn)
+       test_predictions = np.array([item['predictions'][0] for item in test_predictions])
+       
+       root_mean_squared_error = math.sqrt(
+           metrics.mean_squared_error(test_predictions, test_targets))
+       
+       print("Root Mean Squared Error (on data): %0.2f" % root_mean_squared_error)
+
+       RMSE = 161.19
+
+	   The RMSE of the test data was close to the RMSE of training data. This shows that our model is performing correctly in predicting the data.
+
+  b. Give a one-paragraph summary of what you learned about using training, validation and testing datasets.
+    - Through this exercise, I learned that training datasets are used to actually train the model that is a large portion of the origin dataset. The validation dataset is the data that is left from the original dataset after setting the training dataset used to estimate of model's performance while tuning model’s hyperparameters. Finally, as the name implies, the test dataset is used to evaluate the performance of a model in the end by comparing the RMSE. We use these individual datasets to thoroughly verify/validate our model's performance. Also, it is important to understand debugging the data rather than the code while evaluating these datasets.
