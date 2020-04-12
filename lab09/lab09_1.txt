@@ -1,0 +1,50 @@
+Ian Park
+CS344 Lab09
+2020/04/11
+
+Exercise 9.1
+
+ a. How effective is the linear regression approach to the problem?
+  - I don't think it was very effective as the RMSE remained around 0.45~0.44 for all the periods. So not much improvement at all from that point. This is explained in the next section (it was not doing a great job at penalizing misclassifications when the output is interpreted as a probability).
+
+  RMSE (on training data):
+    period 00 : 0.45
+    period 01 : 0.45
+    period 02 : 0.45
+    period 03 : 0.44
+    period 04 : 0.44
+    period 05 : 0.44
+    period 06 : 0.44
+    period 07 : 0.44
+    period 08 : 0.44
+    period 09 : 0.44
+
+ b. Task 1: Compare and contrast L2 Loss vs LogLoss.
+  - According to the exercise, L2 loss isn't very good at penalizing misclassifications with probability outputs since it tries to minimize the comprehensive error. LogLoss measures the performance of a classification model whose output is a probability value between 0 and 1. Unlike L2 loss, LogLoss does penalizes "confidence errors" much more heavily and tries to minimize the loss.
+  
+ c. Task 2: Explain how effective logistic regression is compared with linear regression.
+  - For this model, logistic regression had more improvement from 0.59 to 0.53. However, the resulting RMSE was not better than that of linear regression (0.44).
+
+   LogLoss (on training data):
+     period 00 : 0.59
+     period 01 : 0.57
+     period 02 : 0.56
+     period 03 : 0.55
+     period 04 : 0.54
+     period 05 : 0.54
+     period 06 : 0.54
+     period 07 : 0.53
+     period 08 : 0.53
+     period 09 : 0.53
+   
+ d. Task 3: Here, just report the best values you can achieve for AUC/accuracy and what hyperparameters you used to get them.
+  - AUC: 0.82
+  - accuracy: 0.80
+  - linear_classifier = train_linear_classifier_model(
+    learning_rate=0.000003,
+    steps=200000,
+    batch_size=500,
+    training_examples=training_examples,
+    training_targets=training_targets,
+    validation_examples=validation_examples,
+    validation_targets=validation_targets)

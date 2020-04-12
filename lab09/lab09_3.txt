@@ -1,0 +1,81 @@
+Ian Park
+CS344 Lab09
+2020/04/11
+
+a. Try Chollet’s “Further experiments”. Do any of the alternatives do better than the suggested architecture? Why or why not?
+
+- Relu [Consistently Better overall overall]
+  - MSE (Bad)
+	  1 hidden layers 8 units 0.8863599896430969
+      2 hidden layers 8 units 0.8852800130844116
+	  3 hidden layers 8 units 0.8853999972343445
+
+	  1 hidden layers 16 units 0.8853600025177002
+      2 hidden layers 16 units 0.8833199739456177
+	  3 hidden layers 16 units 0.8794400095939636
+
+	  1 hidden layers 32 units 0.8801199793815613
+      2 hidden layers 32 units 0.8782399892807007
+	  3 hidden layers 32 units 0.878279983997345
+
+      (Good)
+	  1 hidden layers 64 units 0.8819199800491333
+      2 hidden layers 64 units 0.8791999816894531
+	  3 hidden layers 64 units 0.8787599802017212
+
+  - Cross Entropy (Good) [overall better than tanh's] [Best]
+      (Good)
+	  1 hidden layers 8 units 0.8897200226783752
+      2 hidden layers 8 units 0.8872399926185608
+	  3 hidden layers 8 units 0.8885599970817566
+
+	  1 hidden layers 16 units 0.8873999714851379
+      2 hidden layers 16 units 0.884880006313324 *Suggested*
+	  3 hidden layers 16 units 0.8812400102615356
+
+	  1 hidden layers 32 units 0.8838000297546387
+      2 hidden layers 32 units 0.8745999932289124
+	  3 hidden layers 32 units 0.8740400075912476
+
+	  1 hidden layers 64 units 0.8718000054359436 
+      2 hidden layers 64 units 0.8826799988746643
+	  3 hidden layers 64 units 0.8762800097465515
+
+- Tanh
+  - MSE (Bad)
+	  1 hidden layers 8 units 0.889240026473999
+      2 hidden layers 8 units 0.8779199719429016
+	  3 hidden layers 8 units 0.8777599930763245
+
+      (Good)
+	  1 hidden layers 16 units 0.8848000168800354
+      2 hidden layers 16 units 0.8744800090789795
+	  3 hidden layers 16 units 0.8697999715805054
+
+	  1 hidden layers 32 units 0.8736799955368042
+      2 hidden layers 32 units 0.8728399872779846
+	  3 hidden layers 32 units 0.8728799819946289
+
+	  1 hidden layers 64 units 0.8745200037956238 
+      2 hidden layers 64 units 0.8754000067710876
+	  3 hidden layers 64 units 0.8700799942016602
+
+  - Cross Entropy (Good)
+     (Good)
+	  1 hidden layers 8 units 0.8910800218582153 [highest value]
+      2 hidden layers 8 units 0.8852800130844116
+	  3 hidden layers 8 units 0.8632400035858154
+
+	  1 hidden layers 16 units 0.888480007648468
+      2 hidden layers 16 units 0.8781999945640564
+	  3 hidden layers 16 units 0.8655200004577637
+
+	  1 hidden layers 32 units 0.8776000142097473
+      2 hidden layers 32 units 0.8749600052833557
+	  3 hidden layers 32 units 0.8722800016403198
+
+	  1 hidden layers 64 units 0.8731600046157837
+      2 hidden layers 64 units 0.8648399710655212
+	  3 hidden layers 64 units 0.8271600008010864
+
+  - Regardless of activation function and loss function, many of the alternatives using 1 or 2 hidden layers did better or similarly to the suggested architecture. This implies that there is more overfitting as the model gets bigger. However, although not as much as the number of hidden layers, binary cross-entropy/logloss also effected the results, as this problem was more suited for it (binary categorization with a probability between 0 and 1). Overall, relu/cross-entropy/small layers consistently yielded the best results.
