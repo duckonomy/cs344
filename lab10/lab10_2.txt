@@ -1,0 +1,69 @@
+Ian Park
+CS344 Lab10
+2020/04/18
+
+Exercise 10.2
+  a. What does AdaGrad do to boost performance?
+    - It modifies the learning rate adaptively for each coefficient in a model to lower the effective learning rate (so it closes in on the solution). It is useful for convex problems.
+
+  b. Tasks 1–3: Report your best hyperparameter settings and their resulting performance.
+    Task 1:
+      _ = train_nn_regression_model(
+          my_optimizer=tf.train.GradientDescentOptimizer(learning_rate=0.007),
+          steps=1000,
+          batch_size=50,
+          hidden_units=[10, 10],
+          training_examples=normalized_training_examples,
+          training_targets=training_targets,
+          validation_examples=normalized_validation_examples,
+          validation_targets=validation_targets)
+
+	  Final Training Data RMSE: 72.63
+	  Final Validation Data RMSE: 74.65
+
+    Task 2:
+	  Adagrad:
+        _, adagrad_training_losses, adagrad_validation_losses = train_nn_regression_model(
+            my_optimizer=tf.train.AdagradOptimizer(learning_rate=0.5),
+            steps=500,
+            batch_size=100,
+            hidden_units=[10, 10],
+            training_examples=normalized_training_examples,
+            training_targets=training_targets,
+            validation_examples=normalized_validation_examples,
+            validation_targets=validation_targets)
+
+         Final RMSE (on training data):   116.10
+         Final RMSE (on validation data): 117.43
+
+	  Adam:
+        _, adam_training_losses, adam_validation_losses = train_nn_regression_model(
+            my_optimizer=tf.train.AdamOptimizer(learning_rate=0.009),
+            steps=500,
+            batch_size=100,
+            hidden_units=[10, 10],
+            training_examples=normalized_training_examples,
+            training_targets=training_targets,
+            validation_examples=normalized_validation_examples,
+            validation_targets=validation_targets)
+
+
+         Final RMSE (on training data):   116.27
+         Final RMSE (on validation data): 117.60
+
+    Task 3:
+      _ = train_nn_regression_model(
+          my_optimizer=tf.train.AdagradOptimizer(learning_rate=0.15),
+          steps=1000,
+          batch_size=50,
+          hidden_units=[10, 10],
+          training_examples=normalized_training_examples,
+          training_targets=training_targets,
+          validation_examples=normalized_validation_examples,
+          validation_targets=validation_targets)
+	  
+      Final RMSE (on training data):   68.05
+      Final RMSE (on validation data): 69.56
+
+  c. Optional Challenge: You can skip this exercise.
+    - :D

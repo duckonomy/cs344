@@ -1,0 +1,20 @@
+Ian Park
+CS344 Lab10
+2020/04/18
+
+Exercise 10.4
+ 
+  a. Exercise 1:
+    i. What’s the size/shape of the cats/dogs datasets?
+	  - Cats: 1000 training images, 500 test images, each of which were 150x150 in size.
+	  - Dogs: Also 1000 training images, 500 test images, each of which were 150x150 in size.
+
+    ii. How does the first CNN compare with the one we did in class.
+	  - The first CNN has more nodes in each layer than the one we did in class. It also has an input layer and three MaxPooling layers (more than the one in class).
+
+    iii. Can you see any interesting patterns in the intermediate representations?
+	  - The representations become more machine-friendly as they become more generalized abstract representations of the underlying data.
+
+  b. You can skip Exercises 2 & 3.
+    - :D
+

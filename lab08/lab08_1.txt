@@ -1,5 +1,5 @@
 Ian Park
-CS344 Lab07
+CS344 Lab08
 2020/04/05
 
 Exercise 8.1
