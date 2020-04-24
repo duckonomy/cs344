@@ -1,0 +1,438 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# CS 344, Homework 04\n",
+    "### Ian Park \n",
+    "### April 21, 2020"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Question**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Speculate on whether you believe that so-called “deep” neural networks are destined to be another bust just as perceptrons and expert systems were in the past, or whether they really are a breakthrough that will be used for years into the future. Please give a two-to-three-paragraph answer, including examples to back up your argument."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Answer**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    "Until recent years, much of the application of the statistical approach to AI was very limited due to the cost of computation and the lack of availability of useful large datasets (good data was expensive). This kind of limitation in approaches is also reflected in the study of computer graphics. Although they had the concept of ray-tracing earlier on, they had to reverted to various algorithmic hacks to imitate realistic graphics. This was especially so for real-time game graphics. Real-time ray-tracing became feasible just a year ago using top-tier graphics cards (2019 NVIDIA showcase). Similarly, AI has reverted to clever tricks to imitate \"intelligence\" until feasible hardware allowed its wide use. Furthermore, ray-tracing is basically a large physics simulation. Likewise, deep learning is also a more natural approach that just lets the data guide the machine. In the past, A single-layer perceptron by itself was not very useful. It was even unable to solve simple problems like XOR, which required another network layer. Nevertheless, even with theoretical discoveries of multiple layers and backpropagation, deep learning was still practically infeasible due to the computational limitations of that time. Furthermore, only after the emergence of the internet, companies were able to provided useful datasets.\n",
+    "\n",
+    "I speculate that there are two possible causes of a mini \"bust\". I say \"mini\" because I don't think deep learning will ever go away completely. The first problem is the possibility of another computational limit. Hardware has only recently caught up to speed to allow deep learning algorithms. However, now we are again faced with similar problems that GOFAI struggled with. Because Moore's law has ended, many people involved in AI dedicate much time to write software that efficiently handles enormous amounts of data. Programming related to this is somewhat close to old-fashioned programming, in which we are very concerned about the speed and efficiency. This includes concurrent programming algorithms that utilize the multiple cores of cpus and databases systems that keep the data used for deep learning manageable (like map reduce, hadoop, and spark). Furthermore, when the limit hits with even parallelization, different approaches such as quantumn computing and cellular or biological computing could further expand the field of AI to achieve true \"intelligence\". We generally do not know how these will affect AI yet. However, there is no guarantee that deep learning will always be the sole approach to AI.\n",
+    "\n",
+    "The second problem is more of a social problem. Although deep learning is very practical for solving problems. The data used to train a model could be flawed. As Cathy O'Neil describes in her book \"Weapons of Math Destruction\", we cannot blindly trust in machine learning algorithms and the datasets. Sometimes they do not give their use could bring injustice. Models trained on certain datasets could give discriminatory results. For instance, companies like Apple have started using AI for determining a person's credit score for issuing their credit card. However, some people have been discriminated due their sex or age. It is hard to debug datasets that could be subtly biased. These issues will become more apparent as deep learning AIs become more widely used. Furthermore, until this point many companies have collected personal information of users to acquire large datasets. Up to this point, many people were not aware or ignorant. However, this might change. If so, those who utilize deep learning to solve problems must figure out non-intrusive and ethical methods to gather useful data.\n",
+    "\n",
+    "Although these problems will not result in deep learning being a \"bust\", these problems could encourage development and discovery in other areas of AI to be used in conjunction with deep learning."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Question**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Hand-compute a single, complete back-propagation cycle. Use the example network from class and compute the updated weight values for the first gradient descent iteration for the XOR example, i.e., [1, 1] → 0. Use the same initial weights we used in the class example but assume the identity function as the activation function (f(x) = x)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Answer** (Referenced from https://github.com/kvlinden-courses/cs344-code/blob/master/u08features/backpropagation.ipynb)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "1. Fill in random weights (from class).\n",
+    "\n",
+    "$\\begin{aligned}\n",
+    "    &\\begin{bmatrix}\n",
+    "    w_{i_1,h_1} & w_{i_1,h_2} \\\\\n",
+    "    w_{i_2,h_1} & w_{i_2,h_2}\n",
+    "    \\end{bmatrix}\n",
+    "    \\leftarrow\n",
+    "    \\begin{bmatrix}\n",
+    "    0.11 & 0.12 \\\\\n",
+    "    0.21 & 0.08\n",
+    "    \\end{bmatrix} \\\\\n",
+    "    &\\begin{bmatrix}\n",
+    "    w_{h_1, o_1} \\\\ \n",
+    "    w_{h_2, o_1} \n",
+    "    \\end{bmatrix}\n",
+    "    \\leftarrow\n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 \\\\\n",
+    "    0.15\n",
+    "    \\end{bmatrix}\n",
+    "    \\end{aligned}$\n",
+    "    \n",
+    "2. Compute the output for one sample (XOR: $[1, 1]$ $\\rightarrow$ $0$ ).\n",
+    "\n",
+    "    $\\begin{aligned}\n",
+    "    o_j &= \n",
+    "    \\begin{bmatrix}\n",
+    "    1 & 1 \\\\ \n",
+    "    \\end{bmatrix}\n",
+    "    \\cdot\n",
+    "    \\begin{bmatrix}\n",
+    "    0.11 & 0.12 \\\\\n",
+    "    0.21 & 0.08\n",
+    "    \\end{bmatrix}\n",
+    "    \\cdot\n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 \\\\\n",
+    "    0.15\n",
+    "    \\end{bmatrix}\n",
+    "    \\\\ &=\n",
+    "    \\begin{bmatrix}\n",
+    "    1 \\times 0.11 + 1 \\times 0.21 & 1 \\times 0.12 + 1 \\times 0.08\n",
+    "    \\end{bmatrix}\n",
+    "    \\cdot\n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 \\\\ \n",
+    "    0.15\n",
+    "    \\end{bmatrix}\n",
+    "    \\\\ &=\n",
+    "    \\begin{bmatrix}\n",
+    "    0.32 & 0.20\n",
+    "    \\end{bmatrix}\n",
+    "    \\cdot\n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 \\\\ \n",
+    "    0.15 \n",
+    "    \\end{bmatrix}\n",
+    "    \\\\ &=\n",
+    "    \\begin{bmatrix}\n",
+    "    0.32 \\times 0.14 + 0.20 \\times 0.15\n",
+    "    \\end{bmatrix}\n",
+    "    \\\\ &= 0.0748 \n",
+    "    \\end{aligned}\n",
+    "    \\\\\n",
+    "    $\n",
+    "\n",
+    "3. Compute the error (and more importantly, the delta).\n",
+    "\n",
+    "    $\\begin{aligned}\n",
+    "    L_2Error &= (1 - 0.0748)^2 \\\\\n",
+    "    &= 0.8560 \\\\\n",
+    "    \\Delta_{o_1} &= (1 - 0.0748) \\\\\n",
+    "    &= 0.9252 \\\\\n",
+    "    \\end{aligned}$\n",
+    "\n",
+    "4. Backpropagate updates back through the network, assuming:\n",
+    "    $learning\\_rate = 0.05$; \n",
+    "    $f(x) = x$ activation functions for all nodes.\n",
+    "     \n",
+    "    $\\begin{aligned}\n",
+    "    \\begin{bmatrix}\n",
+    "    w_{h_1, o_1} \\\\ \n",
+    "    w_{h_2, o_1}\n",
+    "    \\end{bmatrix} &\\leftarrow \n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 \\\\ \n",
+    "    0.15 \n",
+    "    \\end{bmatrix} + 0.05 \\cdot \n",
+    "    \\begin{bmatrix}\n",
+    "    0.32 \\\\ \n",
+    "    0.20 \n",
+    "    \\end{bmatrix} \\cdot 1.0 \\cdot 0.9252 \\\\\\\\\n",
+    "    &= \n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 \\\\ \n",
+    "    0.15 \n",
+    "    \\end{bmatrix} + \n",
+    "    \\begin{bmatrix}\n",
+    "    0.05 \\times 0.32 \\times 1.0 \\times 0.9252 \\\\\n",
+    "    0.05 \\times 0.20 \\times 1.0 \\times 0.9252 \n",
+    "    \\end{bmatrix} \\\\\n",
+    "    &= \n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 \\\\ \n",
+    "    0.15 \n",
+    "    \\end{bmatrix} +\n",
+    "    \\begin{bmatrix}\n",
+    "     0.0148 \\\\\n",
+    "     0.0093 \n",
+    "    \\end{bmatrix} \\\\\n",
+    "    &=\n",
+    "    \\begin{bmatrix}\n",
+    "    0.1548 \\\\ \n",
+    "    0.1593\n",
+    "    \\end{bmatrix}\n",
+    "    \\end{aligned}$\n",
+    "\n",
+    "    $\\begin{aligned}\n",
+    "    \\begin{bmatrix}\n",
+    "    w_{i_1,h_1} & w_{i_1,h_2} \\\\ \n",
+    "    w_{i_2,h_1} & w_{i_2,h_2}\n",
+    "    \\end{bmatrix} &\\leftarrow \n",
+    "    \\begin{bmatrix}\n",
+    "    0.11 & 0.12 \\\\\n",
+    "    0.21 & 0.08\n",
+    "    \\end{bmatrix} + 0.05 \\cdot\n",
+    "    \\begin{bmatrix}\n",
+    "    1 & 1 \\\\ \n",
+    "    1 & 1\n",
+    "    \\end{bmatrix} \\cdot 1.0 \\odot\n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 & 0.15 \\\\ \n",
+    "    0.14 & 0.15\n",
+    "    \\end{bmatrix} \\cdot -0.0748 \\\\ &=\n",
+    "    \\begin{bmatrix}\n",
+    "    0.11 & 0.12 \\\\\n",
+    "    0.21 & 0.08\n",
+    "    \\end{bmatrix} + \n",
+    "    \\begin{bmatrix}\n",
+    "    0.05 \\times 1 \\times 1.0 & 0.05 \\times 1 \\times 1.0 \\\\ \n",
+    "    0.05 \\times 1 \\times 1.0 & 0.05 \\times 1 \\times 1.0 \\\\ \n",
+    "    \\end{bmatrix} \\odot \n",
+    "    \\begin{bmatrix}\n",
+    "    0.14 \\times 0.9252 & 0.15 \\times 0.9252\\\\ \n",
+    "    0.14 \\times 0.9252 & 0.15 \\times 0.9252 \n",
+    "    \\end{bmatrix} \\\\ &=\n",
+    "    \\begin{bmatrix}\n",
+    "    0.11 & 0.12 \\\\\n",
+    "    0.21 & 0.08\n",
+    "    \\end{bmatrix} + \n",
+    "    \\begin{bmatrix}\n",
+    "    0.05 & 0.05 \\\\ \n",
+    "    0.05 & 0.05 \n",
+    "    \\end{bmatrix} \\odot \n",
+    "    \\begin{bmatrix}\n",
+    "    0.1295 & 0.1388 \\\\\n",
+    "    0.1295 & 0.1388\n",
+    "    \\end{bmatrix} \\\\ &=\n",
+    "    \\begin{bmatrix}\n",
+    "    0.11 & 0.12 \\\\\n",
+    "    0.21 & 0.08\n",
+    "    \\end{bmatrix} + \n",
+    "    \\begin{bmatrix}\n",
+    "    0.05 \\times 0.1295 & 0.05 \\times 0.1388 \\\\\n",
+    "    0.05 \\times 0.1295 & 0.05 \\times 0.1388\n",
+    "    \\end{bmatrix} \\\\ &=\n",
+    "    \\begin{bmatrix}\n",
+    "    0.11 & 0.12 \\\\\n",
+    "    0.21 & 0.08\n",
+    "    \\end{bmatrix} +     \n",
+    "    \\begin{bmatrix}\n",
+    "    0.0065 & 0.0069 \\\\\n",
+    "    0.0065 & 0.0069\n",
+    "    \\end{bmatrix} \\\\ &= \n",
+    "    \\begin{bmatrix}\n",
+    "    0.1165 & 0.1269 \\\\\n",
+    "    0.2165 & 0.0869\n",
+    "    \\end{bmatrix}\n",
+    "    \\end{aligned}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 3"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Question**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Build a Keras-based ConvNet for Keras’s Fashion MNIST dataset (fashion_mnist). Experiment with different network architectures, submit your most performant network, and report the results. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Answer** (Referenced from https://github.com/kvlinden-courses/cs344-code/blob/master/u10nn/keras-cnn.ipynb)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from keras.datasets import fashion_mnist\n",
+    "from keras import layers\n",
+    "from keras import models\n",
+    "from keras.utils import to_categorical\n",
+    "\n",
+    "(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()\n",
+    "\n",
+    "train_images = train_images.reshape((60000, 28, 28, 1)).astype('float32') / 255\n",
+    "\n",
+    "test_images = test_images.reshape((10000, 28, 28, 1)).astype('float32') / 255\n",
+    "\n",
+    "train_labels = to_categorical(train_labels)\n",
+    "test_labels = to_categorical(test_labels)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Model: \"sequential_4\"\n",
+      "_________________________________________________________________\n",
+      "Layer (type)                 Output Shape              Param #   \n",
+      "=================================================================\n",
+      "conv2d_10 (Conv2D)           (None, 26, 26, 32)        320       \n",
+      "_________________________________________________________________\n",
+      "max_pooling2d_7 (MaxPooling2 (None, 13, 13, 32)        0         \n",
+      "_________________________________________________________________\n",
+      "conv2d_11 (Conv2D)           (None, 11, 11, 64)        18496     \n",
+      "_________________________________________________________________\n",
+      "max_pooling2d_8 (MaxPooling2 (None, 5, 5, 64)          0         \n",
+      "_________________________________________________________________\n",
+      "conv2d_12 (Conv2D)           (None, 3, 3, 64)          36928     \n",
+      "_________________________________________________________________\n",
+      "flatten_4 (Flatten)          (None, 576)               0         \n",
+      "_________________________________________________________________\n",
+      "dense_7 (Dense)              (None, 64)                36928     \n",
+      "_________________________________________________________________\n",
+      "dense_8 (Dense)              (None, 10)                650       \n",
+      "=================================================================\n",
+      "Total params: 93,322\n",
+      "Trainable params: 93,322\n",
+      "Non-trainable params: 0\n",
+      "_________________________________________________________________\n"
+     ]
+    }
+   ],
+   "source": [
+    "model = models.Sequential([\n",
+    "    # Configure a convnet with 3 layers of convolutions and max pooling.\n",
+    "    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),\n",
+    "    layers.MaxPooling2D((2, 2)),\n",
+    "    layers.Conv2D(64, (3, 3), activation='relu'),\n",
+    "    layers.MaxPooling2D((2, 2)),\n",
+    "    layers.Conv2D(64, (3, 3), activation='relu'),\n",
+    "    \n",
+    "    # Add layers to flatten the 2D image and then do a 10-way classification.\n",
+    "    layers.Flatten(),\n",
+    "    layers.Dense(64, activation='relu'),\n",
+    "    layers.Dense(10, activation='softplus'),\n",
+    "])\n",
+    "\n",
+    "model.summary()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Epoch 1/5\n",
+      "60000/60000 [==============================] - 23s 389us/step - loss: 0.0707 - accuracy: 0.9233\n",
+      "Epoch 2/5\n",
+      "60000/60000 [==============================] - 20s 327us/step - loss: 0.0664 - accuracy: 0.9234\n",
+      "Epoch 3/5\n",
+      "60000/60000 [==============================] - 16s 271us/step - loss: 0.0625 - accuracy: 0.9247\n",
+      "Epoch 4/5\n",
+      "60000/60000 [==============================] - 16s 273us/step - loss: 0.0609 - accuracy: 0.9235\n",
+      "Epoch 5/5\n",
+      "60000/60000 [==============================] - 17s 275us/step - loss: 0.0589 - accuracy: 0.9246\n",
+      "10000/10000 [==============================] - 1s 95us/step\n",
+      "Accuracy:  0.9210900664329529\n"
+     ]
+    }
+   ],
+   "source": [
+    "model.compile(optimizer='rmsprop',\n",
+    "              loss='binary_crossentropy',\n",
+    "              metrics=['accuracy'])\n",
+    "\n",
+    "model.fit(train_images, \n",
+    "          train_labels, \n",
+    "          epochs=5, \n",
+    "          batch_size=256)\n",
+    "\n",
+    "test_loss, test_acc = model.evaluate(test_images, test_labels)\n",
+    "print(\"Accuracy: \", test_acc)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
