@@ -1,0 +1,115 @@
+Ian Park
+CS344 Lab11
+2020/04/24
+
+Task 1: Is a linear model ever preferable to a deep NN model?
+ - Yes. Deep NN models cases where we do find nonlinearities and there is a large enough viable dataset for its optimizations to benefit from generalization and nonlinear mapping. If we do not have such dataset or if the dataset does show linearity, a linear regression model could be better.
+
+Task 2: Does the NN model do better than the linear model?
+  - In our case (Task 2) the NN model did have a better outcome in both training and testing.
+
+Task 3: Do embeddings do much good for sentiment analysis tasks?
+  DNN Without Embeddings:
+  
+    Training set metrics:
+    accuracy 0.76
+    accuracy_baseline 0.52
+    auc 0.8237179
+    auc_precision_recall 0.80187917
+    average_loss 0.47526082
+    label/mean 0.48
+    loss 11.88152
+    precision 0.71428573
+    prediction/mean 0.4903442
+    recall 0.8333333
+    global_step 1000
+    ---
+    Test set metrics:
+    accuracy 0.72
+    accuracy_baseline 0.56
+    auc 0.77922076
+    auc_precision_recall 0.67494327
+    average_loss 0.553573
+    label/mean 0.44
+    loss 13.839326
+    precision 0.6666667
+    prediction/mean 0.4856582
+    recall 0.72727275
+    global_step 1000
+  
+  DNN With Embeddings:
+    Training set metrics:
+    accuracy 0.7694
+    accuracy_baseline 0.5
+    auc 0.86469704
+    auc_precision_recall 0.8532213
+    average_loss 0.47430548
+    label/mean 0.5
+    loss 11.857636
+    precision 0.82105064
+    prediction/mean 0.4344286
+    recall 0.68896
+    global_step 1000
+    ---
+    Test set metrics:
+    accuracy 0.7682
+    accuracy_baseline 0.5
+    auc 0.86393493
+    auc_precision_recall 0.85316575
+    average_loss 0.4759369
+    label/mean 0.5
+    loss 11.898422
+    precision 0.8222628
+    prediction/mean 0.4331114
+    recall 0.68432
+    global_step 1000
+
+  As you can see from above, it had a slight improvement in accuracy compared to the one without embeddings.
+
+Tasks 4–5: Name two words that have similar embeddings and explain why that makes sense.
+ - Comedy and Action (also Drama) had similar embeddings. It made sense because they were all common and popular movie genres. They would be used similarly when categorizing some sort of a movie.
+
+Task 6: Report your best hyper-parameters and their resulting performance.
+
+  terms_embedding_column = tf.feature_column.embedding_column(terms_feature_column, dimension=5)
+  feature_columns = [ terms_embedding_column ]
+
+  my_optimizer = tf.train.AdagradOptimizer(learning_rate=0.5)
+  my_optimizer = tf.contrib.estimator.clip_gradients_by_norm(my_optimizer, 5.0)
+
+  classifier = tf.estimator.DNNClassifier(
+    feature_columns=feature_columns,
+    hidden_units=[15,10],
+    optimizer=my_optimizer
+  )
+  
+  classifier.train(
+    input_fn=lambda: _input_fn([train_path]),
+    steps=1000)
+  
+  Training set metrics:
+  accuracy 0.86664
+  accuracy_baseline 0.5
+  auc 0.9375181
+  auc_precision_recall 0.9357436
+  average_loss 0.32204336
+  label/mean 0.5
+  loss 8.051084
+  precision 0.857935
+  prediction/mean 0.5084347
+  recall 0.8788
+  global_step 1000
+  ---
+  Test set metrics:
+  accuracy 0.84768
+  accuracy_baseline 0.5
+  auc 0.92299753
+  auc_precision_recall 0.919271
+  average_loss 0.35420534
+  label/mean 0.5
+  loss 8.855134
+  precision 0.8395843
+  prediction/mean 0.5083619
+  recall 0.8596
+  global_step 1000
+  ---

@@ -1,0 +1,40 @@
+Ian Park
+CS344 Lab11
+2020/04/24
+
+Task 1: What are the biases present in the given dataset?
+ - The gender data is significantly skewed. 67% is represented as males rather than a 50:50 split as you would expect. Likewise, the ratio of relationships are not equally represented as there are significantly more husbands than wives. Also, there seems to be some racial under-representation in the dataset. The representation of Whites is significantly skewed.
+
+Task 2: Assess the potential bias in some other feature besides education level.
+ - I set the x-axis to occupation and color/label by as gender. Women were significantly underrepresented in most of the occupations in the dataset.
+
+Task 3: Do as written.
+ - Did as written
+
+Task 4: Do you find disparities when you look at race rather than gender? If so, which way to they skew?
+ - Yes. the model performs better for Asian-Pac-Islander and White than other races when you look at the precision and the recall. The false positive also seem to be higher for the two. It is skewed against mainly Black people and for White and Asian-Pac-Islanders.
+
+White:
+Precision 0.7287 
+Recall 0.5128 
+False Positive Rate 0.0670 
+ 
+Asian-Pac-Islander:
+Precision 0.7363 
+Recall 0.5537 
+False Positive Rate 0.0836
+
+Amer-Indian-Eskimo:
+Precision 0.7778 
+Recall 0.3684 
+False Positive Rate 0.0154
+
+Black:
+Precision 0.6633 
+Recall 0.3869 
+False Positive Rate 0.0265 
+
+Other:
+Precision 0.7273 
+Recall 0.3333 
+False Positive Rate 0.0306 
