@@ -31,10 +31,9 @@ listtran([X|TX], [Y|TY]) :- tran(X, Y), listTran(TX, TY).
 %%! b.
 
 %%%! Q. Does Prolog implement a version of generalized modus ponens (i.e., modus ponens with variables and instatiation)? If so, demonstrate how it’s done; if not, explain why not. If it doesn’t, can you implement one? Why or why not? Be sure that you can explain how you built your system and how Prolog does recursion.
-
-%%%! A. Prolog does have a version of modus ponens shown below.
+%%%! A. Prolog does have a version of modus ponens shown below. It initially tries to define a
 satisfied(me) :- mealtomorrow(pizza).
 mealtomorrow(pizza).
 
-%%%%! This evaluates to true
-%! ?- satisfied(me).
+%! ?- satisfied(me). % Evaluates to true
+%! ?- satisfied(X). % Gives me "me"
