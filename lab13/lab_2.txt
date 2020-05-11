@@ -1,0 +1,48 @@
+CS344 Lab13 Exercise 2
+Ian Park
+05/10/2020
+
+Given:
+on(A, B)
+on(B, C)
+supports(Table, C)
+supports(x, y) => on(y, x)
+on(x, y) => above(x, y)
+above(x, y) ^ above(y, z) => above(x, z)
+
+Prove: above(A, Table)
+
+Proof by contradiction,
+
+Assumption
+!above(A, Table)
+
+CNF(Conjunctive normal form)
+0. supports(x, y) => on(y, x) -> !supports(x, y) v on(y, x)
+1. on(x, y) => above(x, y) -> !on(x, y) v above(x, y)
+2. above(x, y) ^ above(y, z) => above(x, z) -> !above(x, y) v !above(y, z) v above(x, z)
+
+Initial
+on(A, B) ^ on(B, C) ^ supports(Table, C) ^ !above(A, Table) 
+
+(CNF[0])
+
+on(A, B) ^ on(B, C) ^ on(C, Table) ^ !above(A, Table) 
+
+(CNF[1])
+
+on(A, B) ^ on(B, C) ^ above(C, Table) ^ !above(A, Table)
+
+(CNF[1])
+
+above(A, B) ^ above(B, C) ^ above(C, Table) ^ !above(A, Table)
+
+(CNF[2])
+
+above(A, B) ^ above(B, Table) ^ !above(A, Table)
+
+(CNF[2])
+
+above(A, Table) ^ !above(A, Table) Contradiction!
+
+Thus, above(A, Table) is true.
