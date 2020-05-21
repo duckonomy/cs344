@@ -38,6 +38,7 @@ with open(data_file_dcinside, encoding='utf-8') as json_file:
         title = [c for c in title if 'jpg' not in c]
         title = [c for c in title if 'gif' not in c]
         title = [c for c in title if 'fact' not in c]
+
         title_str = ''.join(map(str, title))
         data_title[str(j)] = title_str.strip()
         content = i['content']
@@ -48,6 +49,7 @@ with open(data_file_dcinside, encoding='utf-8') as json_file:
         content = [c for c in content if '\.jpg' not in c]
         content = [c for c in content if '\.gif' not in c]
         content = [c for c in content if '\.' not in c]
+
         content_str = ''.join(map(str, content))
         data_content[str(j)] = content_str.strip()
         j += 1
@@ -61,27 +63,24 @@ df = pd.read_json(json_final)
 title_text_arr = df['title'].to_numpy()
 content_text_arr = df['content'].to_numpy()
 
-
 text = df['content'].str.lower()
 text_content = df['title'].str.lower()
 
 text = text.append(text_content)
 
-text = text.map(lambda s: ' '.join([x for x in s.split() if 'http' not in x]))
-text = text.map(lambda s: ' '.join([x for x in s.split() if 'gif' not in x]))
-text = text.map(lambda s: ' '.join([x for x in s.split() if 'jpg' not in x]))
-text = text.map(lambda s: ' '.join([x for x in s.split() if 'fact' not in x]))
-text = text.map(lambda s: ' '.join([x for x in s.split() if '\.' not in x]))
 text = text.map(lambda s: ' '.join([x for x in s.split() if '\u200b' not in x]))
 
+# Eliminate text that isn't as long
 text = text[text.map(len) > 13]
 
+# Map the characters bidirectionally for encoding
 chars = sorted(list(set(''.join(text))))
-print('total chars:', len(chars))
 char_indices = dict((c, i) for i, c in enumerate(chars))
 indices_char = dict((i, c) for i, c in enumerate(chars))
 
-maxlen = 20
+chars_length = len(chars)
+
+max_sequence_length = 20
 step = 2
 
 json_file = open(load_model_dcinside, 'r')
@@ -116,29 +115,16 @@ blacklist = [
     "며",
     "좀",
     "김",
-    "ㄷㄷ",
     "림",
     "금"
-    "구나",
-    "조음",
-    "웃김",
-    "ㅅㄱ",
     "나",
-    "ㅋㅋ",
-    "들아",
-    "다",
     "네",
-    "있노",
-    "냐",
-    "냐고",
+    "다",
     "점",
     "함",
-    "네ㅔ",
     "셈",
-    "앗서",
     "자",
     "써",
-    "ㄹㅇ",
     "데",
     "요",
     "라",
@@ -146,8 +132,6 @@ blacklist = [
     "중",
     "됨",
     "셈",
-    "ㅜㅜ",
-    "ㅎㅎ",
     "까",
     "짐",
     "당",
@@ -156,28 +140,45 @@ blacklist = [
     "니",
     "햇",
     "가",
+    "냐",
+    "븃",
     "죠",
+    "구나",
+    "조음",
+    "웃김",
+    "들아",
+    "있노",
+    "냐고",
+    "앗서",
     "잖아",
-    "븃"]
+    "ㅅㄱ",
+    "ㅋㅋ",
+    "ㄹㅇ",
+    "ㄷㄷ",
+    "ㅜㅜ",
+    "ㅎㅎ",
+    "네ㅔ",
+]
 
-def sample(preds, temperature=1.0):
-    preds = np.asarray(preds).astype('float64')
-    preds = np.log(preds) / temperature
-    exp_preds = np.exp(preds)
-    preds = exp_preds / np.sum(exp_preds)
-    probas = np.random.multinomial(1, preds, 1)
-    return np.argmax(probas)
+def sample(predictions, temperature=0.2):
+    predictions = np.asarray(predictions).astype('float64')
+    predictions = np.log(predictions) / temperature
+    exp_preds = np.exp(predictions)
+    predictions = exp_preds / np.sum(exp_preds)
+    probabilities = np.random.multinomial(1, predictions, 1)
+    return np.argmax(probabilities)
 
-def generate_w2_seed(sentence, diversity):
-    sentence = sentence[0:maxlen]
+# Similar to print_current_model() in lstm_train.ipynb
+def generate_text(sequence, diversity):
+    sequence = sequence[0:max_sequence_length]
     generated = ''
-    # generated += sentence
+    generated += sequence
 
     sys.stdout.write(generated)
 
     for i in range(40):
-        x_pred = np.zeros((1, maxlen, len(chars)))
-        for t, char in enumerate(sentence):
+        x_pred = np.zeros((1, max_sequence_length, len(chars)))
+        for t, char in enumerate(sequence):
             x_pred[0, t, char_indices[char]] = 1.
 
         preds = model.predict(x_pred, verbose=0)[0]
@@ -185,7 +186,7 @@ def generate_w2_seed(sentence, diversity):
         next_char = indices_char[next_index]
 
         generated += next_char
-        sentence = sentence[1:] + next_char
+        sequence = sequence[1:] + next_char
 
     return generated
 
@@ -204,23 +205,23 @@ def predict():
     if request.method == 'POST':
         print(request.json)
 
-        my_title = random.choice(list(text))
-        my_content = random.choice(list(text))
+        title_seed = random.choice(list(text))
+        content_seed = random.choice(list(text))
 
         while True:
-            if (blacklist_contains(blacklist, my_content)):
-                my_content = random.choice(list(text))
+            if (blacklist_contains(blacklist, content_seed)):
+                content_seed = random.choice(list(text))
             else:
                 break
 
         while True:
-            if (blacklist_contains(blacklist, my_title)):
-                my_title = random.choice(list(text))
+            if (blacklist_contains(blacklist, title_seed)):
+                title_seed = random.choice(list(text))
             else:
                 break
 
-        title = generate_w2_seed(my_title, 0.2)
-        content = generate_w2_seed(my_content, 0.2)
+        title = generate_text(title_seed, 0.2)
+        content = generate_text(content_seed, 0.2)
 
         return jsonify(title=title, content=content)
 
