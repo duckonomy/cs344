@@ -19,23 +19,32 @@ Like my primary influence, the Microsoft Twitter bot, Tay, I wanted to generate 
 My main demonstration is through the Flask web application that reads in my model and its weights.
 
 First you want to create a virtual environment.
+
 `python -m venv path-to-environment`
 
 Once created, source/activate that environment.
+
 `source path-to-environment/bin/activate`
 
 Then install the packages in the `requirements.txt` file.
+
 `pip install -r requirements.txt`
 
 If you need to run the `gpt2.ipynb` notebook you should also install the submodule and `pip install` that folder.
 However, this is not officially part of the primary demonstration.
+
 `git submodule update`
+
+
 `pip install ./KoGPT2`
 
+
 Otherwise, once you're in the virtual environment, you can run your notebook.
+
 `jupyter notebook`
 
 Or you could go into the `api` directory and run
+
 `python app.py`
 
 Then a web server should run on port 5000 (`http://localhost:5000` from your browser)
