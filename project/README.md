@@ -49,7 +49,7 @@ Otherwise, once you're in the virtual environment, you can run your notebook.
 jupyter notebook
 ```
 
-Or you could go into the `api` directory and run
+Or you could go into the `api/` directory and run
 ```
 python app.py
 ```
@@ -59,4 +59,4 @@ Then a web server should run on port 5000 (`http://localhost:5000` from your bro
 There you can start generating text with the model.
 
 ## The Dataset  
-I included the dataset with the repository (around 17mb in total) for ease of use with the website, which is how I will showcase my project.
+I included the dataset with the repository (around 17mb in total) for ease of use with the website, which is how I will showcase my project. It is located in `api/models/`
