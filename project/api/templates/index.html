@@ -1,0 +1,137 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="title-nav">
+  Website Post Generator
+  <span class="link-to">
+	<a href="/">
+	  Generator
+	</a>
+	<a href="/about">
+	  About
+	</a>
+  </span>
+</div>
+
+<div class="flex-container">
+  <div class="general-container">
+	<h3>Select Website</h3>
+
+	<div class="radio-1">
+	  <label class="radio-container">
+		<input type="radio" onclick="handleRadio1(this)" name="community" value="dcinside">
+		<img class="radio-img" src="https://is4-ssl.mzstatic.com/image/thumb/Purple123/v4/37/59/8c/37598c48-66bb-ce6f-64cf-09bec4536e21/source/512x512bb.jpg">
+		<!-- <span class="checkmark"></span> -->
+		<div>
+		  DCINSIDE
+		</div>
+	  </label>
+
+	  <label class="radio-container">
+		<input type="radio" onclick="handleRadio1(this)" name="community" value="opgg">
+
+		<img class="radio-img" src="https://cdn.dribbble.com/users/1155990/screenshots/4987230/talkopgg_logo1.png">
+		<div>
+		  OP.GG
+		</div>
+	  </label>
+	</div>
+
+	<!-- <div class="radio-2 hidden-radio" id="radio-2-group-1"> -->
+	<!--   <label class="container">Ilbe -->
+	<!--	<input type="radio" name="ilbe" onclick="handleRadio2(this)" value="ilbe"> -->
+	<!--	<span class="checkmark"></span> -->
+	<!--   </label> -->
+
+	<!--   <label class="container">Animation -->
+	<!--	<input type="radio" name="ilbe" onclick="handleRadio2(this)" value="animation"> -->
+	<!--	<span class="checkmark"></span> -->
+	<!--   </label> -->
+	<!-- </div> -->
+
+	<!-- <div class="radio-2 hidden-radio" id="radio-2-group-2"> -->
+	<!--   <label class="container">Hit -->
+	<!--	<input type="radio" name="dcinside" onclick="handleRadio2(this)" value="hit"> -->
+	<!--	<span class="checkmark"></span> -->
+	<!--   </label> -->
+
+	<!--   <label class="container">Baseball -->
+	<!--	<input type="radio" name="dcinside" onclick="handleRadio2(this)" value="baseball"> -->
+	<!--	<span class="checkmark"></span> -->
+	<!--   </label> -->
+	<!-- </div> -->
+
+	<div class="input-container">
+	  <div class="input-basic">
+		<button class="tooltip button" id="input-submit"><i class="fas fa-sync-alt"></i> <span class="tooltiptext">Generate New Post</span></button>
+		<button class="tooltip button" id="input-post"><i class="fas fa-plus"></i><span class="tooltiptext">Post on the Site</span></button>
+		<button class="tooltip button" id="input-automate-start"><i class="fas fa-play"></i><span class="tooltiptext">Start Automatic Posts</span></button>
+		<button class="tooltip button" id="input-automate-pause"><i class="fas fa-pause"></i><span class="tooltiptext">Pause Automatic Posts</span></button>
+	  </div>
+
+	  <div class="input-automate">
+		<div class="button-group">
+		  <div class="select">
+			<select id="frequencies" name="frequencies">
+			  <option value="5">5 Minutes</option>
+			  <option value="10">10 Minutes</option>
+			  <option value="30">30 Minutes</option>
+			  <option value="60">60 Minutes</option>
+			</select>
+		  </div>
+		</div>
+		<div class="description">The frequency selector will set a general boundary on a random frequency.</div>
+	  </div>
+	</div>
+
+	<h3 id="generate-section-title">Generated Post</h3>
+
+	<div id="spinner"></div>
+
+	<div id="generated-text">
+	  <!-- <div class="title"> -->
+	  <!--	<strong > -->
+	  <!--	  Title: -->
+	  <!--	</strong> -->
+	  <!--	<span id="generated-title"> -->
+	  <!--	</span> -->
+	  <!-- </div> -->
+
+	  <!-- <div class="content"> -->
+	  <!--	<strong> -->
+	  <!--	  Content: -->
+	  <!--	</strong> -->
+	  <!--	<span id="generated-content"> -->
+	  <!--	</span> -->
+	  <!-- </div> -->
+
+	</div>
+	<!-- <div class="main"> -->
+	  <!--   <div class="title"> -->
+		<!--	<h3>Image Classifier</h3> -->
+		<!--   </div> -->
+
+	  <!--   <div class="panel"> -->
+		<!--	<input id="file-upload" class="hidden" type="file" accept="image/x-png,image/gif,image/jpeg" /> -->
+		<!--	<label for="file-upload" id="file-drag" class="upload-box"> -->
+		  <!--	  <div id="upload-caption">Drop image here or click to select</div> -->
+		  <!--	  <img id="image-preview" class="hidden" /> -->
+		  <!--	</label> -->
+		<!--   </div> -->
+	  <!--   <div style="margin-bottom: 2rem;"> -->
+		<!--	<input type="button" value="Submit" class="button" onclick="submitImage();" /> -->
+		<!--	<input type="button" value="Clear" class="button" onclick="clearImage();" /> -->
+		<!--   </div> -->
+
+	  <!--   <div id="image-box"> -->
+		<!--	<img id="image-display" /> -->
+		<!--	<div id="pred-result" class="hidden"></div> -->
+		<!--	<svg id="loader" class="hidden" viewBox="0 0 32 32" width="32" height="32"> -->
+		  <!--	  <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle> -->
+		  <!--	</svg> -->
+		<!--   </div> -->
+	  <!-- </div> -->
+
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="title-nav">
+  Community Post Generator
+  <span class="link-to">
+	<a href="/">
+	  Generator
+	</a>
+	<a href="/about">
+	  About
+	</a>
+  </span>
+</div>
+<div class="flex-container">
+  <div class="my-container">
+	<h1>About</h1>
+	<div class="general-container">
+	  This is an application made for my CS344(Artificial Intelligence) project at Calvin University for the Spring semester. It is a Korean Community site post generator trained and fine-tuned with scraped data from two infamous and popular Korean community sites. My primary influence was Microsoft's Twitter bot Tay. It utilizes two models: a LSTM model that I trained and a GPT-2 model that I fine-tuned.
+	</div>
+  </div>
+</div>
+
+{% endblock %}

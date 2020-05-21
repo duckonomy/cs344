@@ -1,0 +1,3 @@
+[submodule "project/KoGPT2"]
+	path = project/KoGPT2
+	url = https://github.com/SKT-AI/KoGPT2
