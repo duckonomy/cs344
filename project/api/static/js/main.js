@@ -16,18 +16,18 @@ let radio2String = "";
 
 handleRadio1 = (radioValue) => {
   radio1String = radioValue.value;
-  if (radio1String == "dcinside") {
-	radio2Group1.style.display = "block";
-	radio2Group2.style.display = "none";
-  } else {
-	radio2Group2.style.display = "block";
-	radio2Group1.style.display = "none";
-  }
+  // if (radio1String == "dcinside") {
+  //	radio2Group1.style.display = "block";
+  //	radio2Group2.style.display = "none";
+  // } else {
+  //	radio2Group2.style.display = "block";
+  //	radio2Group1.style.display = "none";
+  // }
 };
 
-handleRadio2 = (radioValue) => {
-  radio2String = radioValue.value;
-};
+// handleRadio2 = (radioValue) => {
+//   radio2String = radioValue.value;
+// };
 
 const spinner = document.getElementById("spinner");
 

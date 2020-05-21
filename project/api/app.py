@@ -14,84 +14,107 @@ from flask import Flask, render_template, request, Response, jsonify
 
 app = Flask(__name__)
 
-load_weights_dcinside = 'models/model-dcinside.h5'
-load_model_dcinside = 'models/model.json'
-data_file_dcinside = 'models/dcinside.json'
-
-load_weights_opgg = 'models/model-opgg.h5'
-load_model_opgg = 'models/model.json'
-data_file_opgg = 'models/opgg.json'
+weight_path = 'models/model-dcinside.h5'
+model_path = 'models/model.json'
+data_path = 'models/dcinside.json'
 
 data_new = {}
 data_title = {}
 data_content = {}
 
-with open(data_file_dcinside, encoding='utf-8') as json_file:
-    j = 0
-
-    data = json.load(json_file)
-
-    for i in data:
-        title = i['title']
-        title = [c for c in title if '\xa0' not in c]
-        title = [c for c in title if '\n' not in c]
-        title = [c for c in title if 'jpg' not in c]
-        title = [c for c in title if 'gif' not in c]
-        title = [c for c in title if 'fact' not in c]
-
-        title_str = ''.join(map(str, title))
-        data_title[str(j)] = title_str.strip()
-        content = i['content']
-        content = [c for c in content if 'http' not in c]
-        content = [c for c in content if '\xa0' not in c]
-        content = [c for c in content if '\n' not in c]
-        content = [c for c in content if '- dc official App' not in c]
-        content = [c for c in content if '\.jpg' not in c]
-        content = [c for c in content if '\.gif' not in c]
-        content = [c for c in content if '\.' not in c]
-
-        content_str = ''.join(map(str, content))
-        data_content[str(j)] = content_str.strip()
-        j += 1
-
-    data_new['title'] = data_title
-    data_new['content'] = data_content
-
-json_final = json.dumps(data_new, ensure_ascii=False)
-
-df = pd.read_json(json_final)
-title_text_arr = df['title'].to_numpy()
-content_text_arr = df['content'].to_numpy()
-
-text = df['content'].str.lower()
-text_content = df['title'].str.lower()
-
-text = text.append(text_content)
-
-text = text.map(lambda s: ' '.join([x for x in s.split() if '\u200b' not in x]))
-
-# Eliminate text that isn't as long
-text = text[text.map(len) > 13]
-
-# Map the characters bidirectionally for encoding
-chars = sorted(list(set(''.join(text))))
-char_indices = dict((c, i) for i, c in enumerate(chars))
-indices_char = dict((i, c) for i, c in enumerate(chars))
-
-chars_length = len(chars)
+char_length = 0
+text = []
+chars = []
+char_indices = {}
+indices_char = {}
 
 max_sequence_length = 20
 step = 2
 
-json_file = open(load_model_dcinside, 'r')
-model_json = json_file.read()
-json_file.close()
-model = model_from_json(model_json)
-model.load_weights(load_weights_dcinside)
-print("Loaded model from disk")
+def select_data(model_str):
+    if (model_str == 'opgg'):
+        weight_path = 'models/model-opgg.h5'
+        model_path = 'data_path'
+        data_path = 'models/opgg.json'
+        print("OP.GG")
+    else:
+        weight_path = 'models/model-dcinside.h5'
+        model_path = 'models/model.json'
+        data_path = 'models/dcinside.json'
+        print("DCINSIDE")
 
-optimizer = Adam()
-model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+
+        with open(data_path, encoding='utf-8') as json_file:
+            j = 0
+
+            data = json.load(json_file)
+
+            for i in data:
+                title = i['title']
+                title = [c for c in title if '\xa0' not in c]
+                title = [c for c in title if '\n' not in c]
+                title = [c for c in title if 'jpg' not in c]
+                title = [c for c in title if 'gif' not in c]
+                title = [c for c in title if 'fact' not in c]
+
+                title_str = ''.join(map(str, title))
+                data_title[str(j)] = title_str.strip()
+                content = i['content']
+                content = [c for c in content if 'http' not in c]
+                content = [c for c in content if '\xa0' not in c]
+                content = [c for c in content if '\n' not in c]
+                content = [c for c in content if '- dc official App' not in c]
+                content = [c for c in content if '\.jpg' not in c]
+                content = [c for c in content if '\.gif' not in c]
+                content = [c for c in content if '\.' not in c]
+
+                content_str = ''.join(map(str, content))
+                data_content[str(j)] = content_str.strip()
+                j += 1
+
+                data_new['title'] = data_title
+                data_new['content'] = data_content
+
+            json_final = json.dumps(data_new, ensure_ascii=False)
+
+            df = pd.read_json(json_final)
+            title_text_arr = df['title'].to_numpy()
+            content_text_arr = df['content'].to_numpy()
+
+            global text
+
+            text = df['content'].str.lower()
+            text_content = df['title'].str.lower()
+
+            text = text.append(text_content)
+
+            text = text.map(lambda s: ' '.join([x for x in s.split() if '\u200b' not in x]))
+
+            # Eliminate text that isn't as long
+            text = text[text.map(len) > 13]
+
+            global chars
+            global char_indices
+            global indices_char
+            # Map the characters bidirectionally for encoding
+            chars = sorted(list(set(''.join(text))))
+            char_indices = dict((c, i) for i, c in enumerate(chars))
+            indices_char = dict((i, c) for i, c in enumerate(chars))
+
+            chars_length = len(chars)
+
+def create_model():
+    json_file = open(model_path, 'r')
+    model_json = json_file.read()
+
+    json_file.close()
+    model = model_from_json(model_json)
+    model.load_weights(weight_path)
+    print("Loaded model from disk")
+
+    optimizer = Adam()
+    model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+    return model
 
 def blacklist_contains(blacklist, seed):
     for i in blacklist:
@@ -169,14 +192,14 @@ def sample(predictions, temperature=0.2):
     return np.argmax(probabilities)
 
 # Similar to print_current_model() in lstm_train.ipynb
-def generate_text(sequence, diversity):
+def generate_text(sequence, diversity, model):
     sequence = sequence[0:max_sequence_length]
     generated = ''
     generated += sequence
 
     sys.stdout.write(generated)
 
-    for i in range(40):
+    for i in range(20):
         x_pred = np.zeros((1, max_sequence_length, len(chars)))
         for t, char in enumerate(sequence):
             x_pred[0, t, char_indices[char]] = 1.
@@ -203,7 +226,9 @@ def about():
 @app.route('/generate', methods=['GET', 'POST'])
 def predict():
     if request.method == 'POST':
-        print(request.json)
+        select_data(request.json['community'])
+        print(text)
+        model = create_model()
 
         title_seed = random.choice(list(text))
         content_seed = random.choice(list(text))
@@ -220,8 +245,8 @@ def predict():
             else:
                 break
 
-        title = generate_text(title_seed, 0.2)
-        content = generate_text(content_seed, 0.2)
+        title = generate_text(title_seed, 0.2, model)
+        content = generate_text(content_seed, 0.2, model)
 
         return jsonify(title=title, content=content)
 
